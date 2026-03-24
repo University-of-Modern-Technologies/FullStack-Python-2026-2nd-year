@@ -66,4 +66,4 @@ uv sync
 
 ## Ліцензія
 
-© NEOIVERSITY, 2026
+© NEOVERSITY, 2026
