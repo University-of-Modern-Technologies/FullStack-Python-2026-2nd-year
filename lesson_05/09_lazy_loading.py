@@ -164,7 +164,9 @@ def lazy_loading_demo():
         print("\nОтримання всіх авторів (1 запит)")
         start_time = time.perf_counter()
         stmt = select(Author)
-        authors = session.scalars(stmt).all()
+        authors = session.scalars(
+            stmt
+        ).all()  # scalars(stmt) == execute(stmt).scalars()
 
         # Лічильник запитів
         query_count = 1  # 1 вже виконано для отримання авторів

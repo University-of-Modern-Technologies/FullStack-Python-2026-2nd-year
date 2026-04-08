@@ -176,7 +176,7 @@ async def setup_database():
 # асинхронна демонстрація eager loading
 async def eager_loading_demo():
     print(
-        "\n=== Демонстрація жадного завантаження (selectinload) в асинхронному режимі ==="
+        "\n=== Демонстрація жадібного завантаження (selectinload) в асинхронному режимі ==="
     )
 
     async with async_session() as session:
