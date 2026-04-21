@@ -17,3 +17,4 @@
 **/test_reports
 **/test_logs
 **/test_errors
+**/__pycache__
