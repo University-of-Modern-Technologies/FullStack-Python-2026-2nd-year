@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Тема 10 — CORS demo</title>
+  </head>
+  <body>
+    <h1>CORS demo</h1>
+    <p>
+      Відкрий через Live Server (<code>http://127.0.0.1:5500</code>), origin має
+      бути в <code>CORS_ORIGINS</code>.
+    </p>
+    <button id="btn">GET /healthz</button>
+    <pre id="out"></pre>
+    <script>
+      document.getElementById("btn").onclick = async () => {
+        const out = document.getElementById("out");
+        try {
+          const r = await fetch("http://127.0.0.1:8000/healthz");
+          out.textContent = JSON.stringify(await r.json(), null, 2);
+        } catch (e) {
+          out.textContent = "Помилка:\n" + e;
+        }
+      };
+    </script>
+  </body>
+</html>

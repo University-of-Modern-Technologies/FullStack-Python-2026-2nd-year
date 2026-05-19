@@ -1,0 +1,17 @@
+[project]
+name = "lesson-10"
+version = "0.1.0"
+description = "Todo API: env, rate limit, CORS, Redis cache, RBAC"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi[standard]>=0.136.1",
+    "pwdlib[argon2]>=0.3.0",
+    "pydantic-settings>=2.14.1",
+    "pyjwt>=2.12.1",
+    "redis>=5.2.1",
+    "slowapi>=0.1.9",
+    "sqlalchemy>=2.0.49",
+]
