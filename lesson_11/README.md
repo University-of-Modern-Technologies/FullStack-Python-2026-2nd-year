@@ -61,7 +61,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 ```
 
 | Шар | Папка | Роль |
-|-----|-------|------|
+| ----- | ------- | ------ |
 | Routes | `src/routes/` | HTTP, `Depends`, `response_model`, background tasks |
 | Services | `src/services/` | Бізнес-логіка: auth, users, todos, email, avatars |
 | Repository | `src/repository/` | SQL / ORM |
@@ -72,7 +72,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 ### Документація сервісів і middleware
 
 | Модуль | Опис |
-|--------|------|
+| -------- | ------ |
 | [src/services/docs/auth.md](src/services/docs/auth.md) | JWT, login/refresh/logout, email verification |
 | [src/services/docs/todos.md](src/services/docs/todos.md) | CRUD todos, кешування списку |
 | [src/services/docs/users.md](src/services/docs/users.md) | Users, ролі, `me`, avatar update |
@@ -82,7 +82,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 ## Тема 11 — огляд
 
 | Тема | Код | Перевірка |
-|------|-----|-----------|
+| ------ | ----- | ----------- |
 | Email verification token | `src/services/auth.py` | register -> лист -> `/api/auth/verify-email?token=...` |
 | SMTP-відправка | `src/services/email.py`, `src/templates/email/verify_email.html` | після register приходить HTML-лист |
 | Сторінка результату verify | `src/templates/pages/verify_email_result.html` | відкриття verify link у браузері |
@@ -96,7 +96,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 ### Auth (`src/routes/auth.py`)
 
 | Метод | Шлях | Примітка |
-|-------|------|----------|
+| ------- | ------ | ---------- |
 | POST | `/api/auth/register` | створює user і фоново відправляє verification email |
 | GET | `/api/auth/verify-email?token=...` | підтверджує email, повертає HTML-сторінку |
 | POST | `/api/auth/resend-verification` | body: `email`; завжди `204`, щоб не розкривати наявність email |
@@ -107,7 +107,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 ### Users (`src/routes/users.py`)
 
 | Метод | Шлях | Примітка |
-|-------|------|----------|
+| ------- | ------ | ---------- |
 | GET | `/api/users/me` | Bearer, rate limit |
 | PATCH | `/api/users/me/avatar` | Bearer, `multipart/form-data`, поле `file`, лише `image/*`, до 5MB |
 
@@ -120,7 +120,7 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 Префікс `/api/access`:
 
 | Метод | Шлях | Хто |
-|-------|------|-----|
+| ------- | ------ | ----- |
 | GET | `/user` | будь-який з токеном |
 | GET | `/moderator/todos` | moderator, admin |
 | GET | `/admin/users` | admin |
@@ -207,7 +207,7 @@ lesson_11/
 ## Типові помилки
 
 | Симптом | Що перевірити |
-|---------|----------------|
+| --------- | ---------------- |
 | `403` на login | email ще не підтверджено |
 | Лист не приходить | `MAIL_*`, SMTP-порт, SSL/TLS flags, spam folder |
 | Verify link веде не туди | `APP_PUBLIC_URL` |
