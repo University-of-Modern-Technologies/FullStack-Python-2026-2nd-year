@@ -18,6 +18,8 @@
 **/test_logs
 **/test_errors
 **/__pycache__
+**/htmlcov
+**/docs
 
 **/.env
 !**/.env.example

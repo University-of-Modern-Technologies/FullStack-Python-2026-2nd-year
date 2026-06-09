@@ -8,21 +8,21 @@ class Animal:
 
 
 class Cat(Animal):
-    def say(self) -> str:
+    def say(self) -> str:  # type: ignore[override]
         return "Meow"
 
 
 class Dog(Animal):
-    def say(self):
+    def say(self) -> str:  # type: ignore[override]
         return "Woof"
 
 
-class CatDog(Cat, Dog):  #
+class CatDog(Cat, Dog):
     def info(self):  #
         return f"{self.nickname}-{self.weight}"  #
 
 
-class DogCat(Dog, Cat):  #
+class DogCat(Dog, Cat):
     def info(self):  #
         return f"{self.nickname}-{self.weight}"  #
 
