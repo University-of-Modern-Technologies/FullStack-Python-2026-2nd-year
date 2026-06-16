@@ -1,6 +1,6 @@
-# Lesson 11: Інтеграція поштових сервісів і cloud-сховища
+# Lesson 13: Документація і тести для захищеного Todo API
 
-Розширення Todo API з lesson_10: підтвердження email після реєстрації та завантаження avatar у Cloudinary.
+Навчальний FastAPI-проєкт із реєстрацією, JWT/refresh-токенами, підтвердженням email, RBAC-ролями, CORS, rate limiting, IP blacklist, Redis-кешем списків todo, Cloudinary avatar upload, Sphinx-документацією та pytest-тестами.
 
 ## Вимоги
 
@@ -23,6 +23,7 @@ uv run fastapi dev main.py
 
 - API: <http://127.0.0.1:8000>
 - Swagger: <http://127.0.0.1:8000/docs>
+- Sphinx HTML: `docs/_build/html/index.html` після збірки документації
 
 **Seed-користувачі** (`scripts/seed_users.py`): `user_demo`, `mod_demo`, `admin_demo` — пароль `demo1234`.
 
@@ -69,17 +70,34 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 | Middleware | `src/middleware/` | IP blacklist, CORS у `main.py` |
 | Schemas | `src/schemas/` | Pydantic: `user.py`, `auth.py`, `todo.py` |
 
-### Документація сервісів і middleware
+### Документація
 
-| Модуль | Опис |
-| -------- | ------ |
-| [src/services/docs/auth.md](src/services/docs/auth.md) | JWT, login/refresh/logout, email verification |
-| [src/services/docs/todos.md](src/services/docs/todos.md) | CRUD todos, кешування списку |
-| [src/services/docs/users.md](src/services/docs/users.md) | Users, ролі, `me`, avatar update |
-| [src/services/docs/cache.md](src/services/docs/cache.md) | Redis-кеш списку todos |
-| [src/middleware/ip_block.md](src/middleware/ip_block.md) | Blacklist IP з `data/blocked_ips.json` |
+Документація живе в `docs/` і збирається Sphinx з Python docstring-ів через `sphinx.ext.autodoc`, `autosummary`, `napoleon` і `viewcode`.
 
-## Тема 11 — огляд
+```bash
+uv run sphinx-build -b html docs docs/_build/html
+```
+
+На Windows також можна запускати:
+
+```powershell
+cd docs
+.\make.bat html
+```
+
+Головний файл документації: [docs/index.rst](docs/index.rst). Зібрана HTML-версія відкривається з `docs/_build/html/index.html`.
+
+Sphinx-довідник описує:
+
+- точку входу `main.py`;
+- конфігурацію `src/conf/`;
+- базу даних, ORM-моделі та Alembic-міграції;
+- middleware, limiter, repositories, services, routes і schemas;
+- допоміжні скрипти `scripts/seed_users.py` та `scripts/smoke_test.py`.
+
+Окремий markdown-файл для IP blacklist: [src/middleware/ip_block.md](src/middleware/ip_block.md).
+
+## Тема 13 — огляд
 
 | Тема | Код | Перевірка |
 | ------ | ----- | ----------- |
@@ -90,6 +108,35 @@ HTTP -> middleware (IP, CORS) -> routes -> services -> repository -> Postgres
 | Повторна відправка verify | `POST /api/auth/resend-verification` | непідтверджений email отримує новий лист |
 | Cloudinary avatar upload | `src/services/avatars.py`, `PATCH /api/users/me/avatar` | upload image -> `avatar_url` у відповіді |
 | Міграції БД | `d7fcd0fb3a59_add_email_confirmed.py`, `3ad4c05a1470_add_avatar.py` | `users.email_verified`, `users.avatar_url` |
+| Sphinx-документація | `docs/` | HTML-довідник з autodoc |
+| Pytest-тести | `tests/` | route, auth, RBAC, todo CRUD, avatar scenarios |
+
+## Тести
+
+Тестовий набір лежить у `tests/` і використовує `pytest`, `pytest-asyncio`, `pytest-cov`, `TestClient` та in-memory SQLite через `aiosqlite`. Зовнішні сервіси в тестах замокані: Redis cache, email-відправка і Cloudinary upload не потребують реальних облікових даних.
+
+Запуск усіх тестів:
+
+```bash
+uv run pytest
+```
+
+Запуск із coverage:
+
+```bash
+uv run pytest --cov=src --cov=main --cov=scripts --cov-report=term-missing --cov-report=html
+```
+
+HTML-звіт coverage після запуску доступний у `htmlcov/index.html`.
+
+Поточні групи тестів:
+
+- `tests/test_auth_routes.py` — register, duplicate register, login, email verification, resend verification, refresh token;
+- `tests/test_api_routes.py` — root, health, readiness, `/me`, avatar route, todo CRUD, ізоляція todo між користувачами, RBAC;
+- `tests/test_avatars.py` — сервіс завантаження avatar і помилка Cloudinary;
+- `tests/conftest.py` — тестова БД, seed-користувачі, JWT headers і mocks.
+
+Примітка: тест logout revocation зараз позначений `skip`, бо поведінка відкликання refresh-токена ще переглядається.
 
 ## API
 
@@ -184,23 +231,31 @@ uv run alembic upgrade head
 ## Структура проєкту
 
 ```text
-lesson_11/
+lesson_13/
 ├── main.py
 ├── docker-compose.yml
 ├── data/blocked_ips.json
+├── docs/
+│   ├── conf.py
+│   ├── index.rst
+│   └── _build/html/        # зібрана HTML-документація
 ├── scripts/
 │   ├── seed_users.py
 │   └── smoke_test.py
 ├── src/
 │   ├── routes/             # auth, users, todos, access
 │   ├── services/           # auth, users, todos, cache, email, avatars
-│   │   └── docs/           # документація сервісів
 │   ├── templates/          # email і pages templates
 │   ├── middleware/
 │   ├── repository/
 │   ├── schemas/
 │   ├── entity/models.py
 │   └── conf/config.py
+├── tests/
+│   ├── conftest.py
+│   ├── test_api_routes.py
+│   ├── test_auth_routes.py
+│   └── test_avatars.py
 └── frontend-cors-demo/
 ```
 

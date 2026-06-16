@@ -1,0 +1,13 @@
+[project]
+name = "lesson-14"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "celery>=5.6.3",
+    "mongoengine>=0.29.3",
+    "pika>=1.4.1",
+    "python-dotenv>=1.2.1",
+    "redis>=7.1.0",
+]

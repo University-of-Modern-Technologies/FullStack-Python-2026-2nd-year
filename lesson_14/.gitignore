@@ -1,0 +1,5 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+ex_celery/task_results.json
