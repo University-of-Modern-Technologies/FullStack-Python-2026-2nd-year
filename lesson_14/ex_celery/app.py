@@ -7,10 +7,10 @@ from my_task import add, sub
 RESULTS_FILE = Path(__file__).with_name("task_results.json")
 
 if __name__ == "__main__":
-    add_result = cast(Any, add).delay(1, 1)
+    add_result = cast(Any, add).delay(10, 1)  # add.delay(1, 1)
     print(f"Add task id: {add_result.id}")
 
-    sub_result = cast(Any, sub).delay(5, 3)
+    sub_result = cast(Any, sub).delay(15, 3)
     print(f"Sub task id: {sub_result.id}")
 
     tasks = [

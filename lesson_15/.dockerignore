@@ -1,0 +1,11 @@
+.venv
+htmlcov
+docs/_build
+__pycache__
+*.pyc
+.pytest_cache
+.env
+.git
+.gitignore
+*.md
+frontend-cors-demo

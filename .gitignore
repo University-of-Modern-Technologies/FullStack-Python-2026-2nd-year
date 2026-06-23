@@ -22,4 +22,5 @@
 **/docs
 
 **/.env
+**/fly.toml
 !**/.env.example
